@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitacoin - Educational Gamification Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Authentication Section -->
+    <div id="auth-section" class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1 class="auth-title">
+                    <i class="fas fa-coins"></i>
+                    Vitacoin
+                </h1>
+                <p class="auth-subtitle">Educational Gamification Platform</p>
+            </div>
+            
+            <div class="auth-toggle">
+                <button id="login-tab" class="auth-tab active">Login</button>
+                <button id="signup-tab" class="auth-tab">Sign Up</button>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form active">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" id="login-email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" id="login-password" placeholder="Enter your password" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Role</label>
+                    <select class="form-control" id="login-role">
+                        <option value="student">Student</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn--primary btn--full-width">Sign In</button>
+            </form>
+            
+            <!-- Signup Form -->
+            <form id="signup-form" class="auth-form">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="signup-name" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" id="signup-email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" id="signup-password" placeholder="Create a password" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Role</label>
+                    <select class="form-control" id="signup-role">
+                        <option value="student">Student</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn--primary btn--full-width">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="app-section" class="app-container hidden">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-coins"></i>
+                    <span>Vitacoin</span>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <span class="user-name" id="current-user-name">Loading...</span>
+                        <span class="user-role" id="current-user-role">Loading...</span>
+                    </div>
+                </div>
+            </div>
+            
+            <ul class="sidebar-menu" id="sidebar-menu">
+                <!-- Menu items will be populated by JavaScript based on role -->
+            </ul>
+            
+            <div class="sidebar-footer">
+                <button class="btn btn--outline btn--full-width" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Student Dashboard -->
+            <div id="student-dashboard" class="dashboard-content">
+                <header class="dashboard-header">
+                    <div class="welcome-section">
+                        <h1 class="dashboard-title">Welcome back, <span id="student-name">Student</span>!</h1>
+                        <p class="dashboard-subtitle">Continue your learning journey and earn more Vitacoins</p>
+                    </div>
+                    
+                    <div class="vitacoin-balance">
+                        <div class="balance-card">
+                            <div class="balance-icon">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <div class="balance-info">
+                                <span class="balance-label">Your Balance</span>
+                                <span class="balance-amount" id="vitacoin-balance">0</span>
+                                <span class="balance-currency">Vitacoins</span>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="dashboard-grid">
+                    <!-- Daily Claim Section -->
+                    <div class="dashboard-card claim-card">
+                        <div class="card-header">
+                            <h3>Daily Bonus</h3>
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="card-body">
+                            <p>Claim your daily Vitacoins!</p>
+                            <button id="claim-daily-btn" class="btn btn--primary claim-button">
+                                <i class="fas fa-hand-holding-heart"></i>
+                                Claim 25 Coins
+                            </button>
+                            <div class="last-claim" id="last-claim-info">
+                                Last claimed: Never
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Streak Display -->
+                    <div class="dashboard-card streak-card">
+                        <div class="card-header">
+                            <h3>Login Streak</h3>
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="streak-display">
+                                <div class="streak-number" id="streak-count">0</div>
+                                <div class="streak-label">Days in a row</div>
+                                <div class="streak-icon" id="streak-icon">
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="dashboard-card stats-card">
+                        <div class="card-header">
+                            <h3>Quick Stats</h3>
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="stat-item">
+                                <span class="stat-label">Completed Tasks</span>
+                                <span class="stat-value" id="completed-tasks">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Total Earned</span>
+                                <span class="stat-value" id="total-earned">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Current Rank</span>
+                                <span class="stat-value" id="current-rank">#0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Badges -->
+                    <div class="dashboard-card badges-card">
+                        <div class="card-header">
+                            <h3>Your Badges</h3>
+                            <i class="fas fa-medal"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="badges-grid" id="user-badges">
+                                <!-- Badges will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Leaderboard -->
+                    <div class="dashboard-card leaderboard-card">
+                        <div class="card-header">
+                            <h3>Leaderboard</h3>
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="leaderboard-list" id="leaderboard-list">
+                                <!-- Leaderboard will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Available Tasks -->
+                    <div class="dashboard-card tasks-card">
+                        <div class="card-header">
+                            <h3>Available Tasks</h3>
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="tasks-list" id="available-tasks">
+                                <!-- Tasks will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transaction History Page -->
+            <div id="transaction-history" class="page-content hidden">
+                <div class="page-header">
+                    <h1>Vitacoin HiFlow</h1>
+                    <p>Your complete transaction history</p>
+                </div>
+                
+                <div class="transaction-filters">
+                    <select id="transaction-filter" class="form-control">
+                        <option value="all">All Transactions</option>
+                        <option value="reward">Rewards</option>
+                        <option value="penalty">Penalties</option>
+                    </select>
+                    <select id="transaction-sort" class="form-control">
+                        <option value="date-desc">Newest First</option>
+                        <option value="date-asc">Oldest First</option>
+                        <option value="amount-desc">Highest Amount</option>
+                        <option value="amount-asc">Lowest Amount</option>
+                    </select>
+                </div>
+                
+                <div class="transaction-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transaction-table-body">
+                            <!-- Transactions will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Admin Dashboard -->
+            <div id="admin-dashboard" class="dashboard-content hidden">
+                <header class="dashboard-header">
+                    <div class="welcome-section">
+                        <h1 class="dashboard-title">Admin Dashboard</h1>
+                        <p class="dashboard-subtitle">Manage tasks, users, and system configuration</p>
+                    </div>
+                </header>
+
+                <div class="dashboard-grid">
+                    <!-- User Overview -->
+                    <div class="dashboard-card admin-stats-card">
+                        <div class="card-header">
+                            <h3>User Overview</h3>
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="admin-stat">
+                                <span class="admin-stat-label">Total Students</span>
+                                <span class="admin-stat-value" id="total-students">0</span>
+                            </div>
+                            <div class="admin-stat">
+                                <span class="admin-stat-label">Active Today</span>
+                                <span class="admin-stat-value" id="active-today">0</span>
+                            </div>
+                            <div class="admin-stat">
+                                <span class="admin-stat-label">Total Vitacoins</span>
+                                <span class="admin-stat-value" id="total-vitacoins">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Task Management -->
+                    <div class="dashboard-card task-management-card">
+                        <div class="card-header">
+                            <h3>Task Management</h3>
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <div class="card-body">
+                            <button class="btn btn--primary" id="create-task-btn">
+                                <i class="fas fa-plus"></i>
+                                Create New Task
+                            </button>
+                            <div class="admin-tasks-list" id="admin-tasks-list">
+                                <!-- Admin tasks will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Penalty Configuration -->
+                    <div class="dashboard-card penalty-config-card">
+                        <div class="card-header">
+                            <h3>Penalty Settings</h3>
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="form-label">Missed Deadline Penalty</label>
+                                <input type="number" class="form-control" id="deadline-penalty" value="10" min="1" max="100">
+                                <small>Vitacoins deducted for missed deadlines</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Daily Inactivity Penalty</label>
+                                <input type="number" class="form-control" id="inactivity-penalty" value="1" min="1" max="10">
+                                <small>Vitacoins deducted per day of inactivity (max 3 days)</small>
+                            </div>
+                            <button class="btn btn--primary" id="save-penalties-btn">Save Settings</button>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="dashboard-card recent-activity-card">
+                        <div class="card-header">
+                            <h3>Recent Activity</h3>
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="activity-list" id="recent-activity">
+                                <!-- Recent activity will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Notification System -->
+    <div id="notification-container" class="notification-container">
+        <!-- Notifications will be added here dynamically -->
+    </div>
+
+    <!-- Modals -->
+    <!-- Create Task Modal -->
+    <div id="create-task-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Task</h3>
+                <button class="modal-close" id="close-task-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="create-task-form" class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Task Title</label>
+                    <input type="text" class="form-control" id="task-title" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" id="task-description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Vitacoin Reward</label>
+                    <input type="number" class="form-control" id="task-reward" min="1" max="500" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Deadline</label>
+                    <input type="date" class="form-control" id="task-deadline" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn--outline" id="cancel-task-btn">Cancel</button>
+                    <button type="submit" class="btn btn--primary">Create Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Coin Animation Container -->
+    <div id="coin-animation-container" class="coin-animation-container">
+        <!-- Animated coins will be added here -->
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

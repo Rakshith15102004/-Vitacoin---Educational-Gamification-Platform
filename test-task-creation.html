@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Creation Test - Vitacoin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .info { color: #17a2b8; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Task Creation Test - Vitacoin</h1>
+    
+    <div class="test-section">
+        <h2>Test Instructions</h2>
+        <ol>
+            <li>Open the main Vitacoin application in another tab</li>
+            <li>Login as an administrator (wilson@admin.edu / admin123)</li>
+            <li>Navigate to the admin dashboard</li>
+            <li>Click "Create New Task" button</li>
+            <li>Fill out the form and submit</li>
+            <li>Check the console for any errors</li>
+        </ol>
+    </div>
+    
+    <div class="test-section">
+        <h2>Quick Tests</h2>
+        <button class="test-button" onclick="testLocalStorage()">Test Local Storage</button>
+        <button class="test-button" onclick="testVitacoinApp()">Test VitacoinApp Class</button>
+        <button class="test-button" onclick="clearLog()">Clear Log</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Results</h2>
+        <div id="log" class="log"></div>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const logElement = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${message}\n`;
+            logElement.textContent += logEntry;
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('log').textContent = '';
+        }
+
+        function testLocalStorage() {
+            log('Testing localStorage...', 'info');
+            
+            try {
+                // Test basic localStorage functionality
+                localStorage.setItem('test_key', 'test_value');
+                const testValue = localStorage.getItem('test_key');
+                
+                if (testValue === 'test_value') {
+                    log('✅ localStorage is working properly', 'success');
+                } else {
+                    log('❌ localStorage test failed', 'error');
+                }
+                
+                // Clean up test data
+                localStorage.removeItem('test_key');
+                
+                // Check Vitacoin data
+                const users = localStorage.getItem('vitacoin_users');
+                const tasks = localStorage.getItem('vitacoin_tasks');
+                const transactions = localStorage.getItem('vitacoin_transactions');
+                
+                log(`Vitacoin data found:`, 'info');
+                log(`- Users: ${users ? 'Yes' : 'No'}`, 'info');
+                log(`- Tasks: ${tasks ? 'Yes' : 'No'}`, 'info');
+                log(`- Transactions: ${transactions ? 'Yes' : 'No'}`, 'info');
+                
+            } catch (error) {
+                log(`❌ localStorage error: ${error.message}`, 'error');
+            }
+        }
+
+        function testVitacoinApp() {
+            log('Testing VitacoinApp class...', 'info');
+            
+            try {
+                // Check if the main app is loaded
+                if (typeof vitacoinApp !== 'undefined') {
+                    log('✅ VitacoinApp class is loaded', 'success');
+                    
+                    // Test basic properties
+                    log(`- Users: ${vitacoinApp.appData.users.length}`, 'info');
+                    log(`- Tasks: ${vitacoinApp.appData.tasks.length}`, 'info');
+                    log(`- Transactions: ${vitacoinApp.appData.transactions.length}`, 'info');
+                    
+                    // Test createTask method
+                    if (typeof vitacoinApp.createTask === 'function') {
+                        log('✅ createTask method exists', 'success');
+                    } else {
+                        log('❌ createTask method not found', 'error');
+                    }
+                    
+                } else {
+                    log('❌ VitacoinApp class not found', 'error');
+                    log('Make sure the main application is loaded', 'info');
+                }
+                
+            } catch (error) {
+                log(`❌ VitacoinApp test error: ${error.message}`, 'error');
+            }
+        }
+
+        // Auto-run basic tests when page loads
+        window.addEventListener('load', () => {
+            log('Page loaded, running basic tests...', 'info');
+            setTimeout(() => {
+                testLocalStorage();
+                testVitacoinApp();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
